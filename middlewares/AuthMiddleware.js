@@ -12,6 +12,7 @@ const validateToken = async (req, res, next) => {
         const validToken = verify(accessToken, "authsecret");
         const user = await Users.findOne({where: { id: validToken.id, isBlocked: false } });
         if (user) {
+            req.user = user;
             return next();
         } else {
             return res.json({ error: "User is not logged in"});
